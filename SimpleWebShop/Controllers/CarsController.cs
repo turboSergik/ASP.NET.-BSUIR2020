@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SimpleWebShop.App.intefraces;
-using SimpleWebShop.App.Intefraces;
+using SimpleWebShop.App.Interfaces;
+using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.ViewModels;
 using System;
 using System.Collections.Generic;

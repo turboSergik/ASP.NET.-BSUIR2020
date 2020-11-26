@@ -1,27 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SimpleWebShop.App.intefraces;
-using SimpleWebShop.App.Intefraces;
+using SimpleWebShop.App;
 using SimpleWebShop.App.Mocks;
+
+using SimpleWebShop.App.Interfaces;
+using SimpleWebShop.App.Repository;
 
 namespace SimpleWebShop
 {
     public class Startup
     {
+
+        private IConfigurationRoot _confString;
+
+        public Startup(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostEnv)
+        {
+            _confString = new ConfigurationBuilder().SetBasePath(hostEnv.ContentRootPath).AddJsonFile("DbSettings.json").Build();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAllCars, MockAllCars>();
-            services.AddTransient<ICarsCategory, MockCarsCategory>();
+            services.AddDbContext<AppDBContent>(options => options.UseSqlServer(_confString.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IAllCars, CarsRepository>();
+            services.AddTransient<ICarsCategory, CategoryRepository>();
             services.AddMvc(mvcOtions => {
                 mvcOtions.EnableEndpointRouting = false;
             });
@@ -30,26 +38,17 @@ namespace SimpleWebShop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            /*
+            
             if (env.IsDevelopment())
             {
             }
-            */
+            
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-            // app.UseRouting();
 
-            /*
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });
-            */
+            GenerateDBObjects.GenerateObjects(app);
         }
     }
 }

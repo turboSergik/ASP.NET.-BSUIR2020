@@ -1,4 +1,4 @@
-﻿using SimpleWebShop.App.intefraces;
+﻿using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Models;
 using System;
 using System.Collections.Generic;

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimpleWebShop.App.Intefraces
+namespace SimpleWebShop.App.Interfaces
 {
     public interface IAllCars
     {
-        IEnumerable<Car> GetAllCars { get; set; }
-        IEnumerable<Car> GetFavCars { get; set; }
+        IEnumerable<Car> GetAllCars { get; }
+        IEnumerable<Car> GetFavCars { get; }
         Car GetObjectCar(int carID);
     }
 }

@@ -1,5 +1,5 @@
-﻿using SimpleWebShop.App.intefraces;
-using SimpleWebShop.App.Intefraces;
+﻿using SimpleWebShop.App.Interfaces;
+using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Models;
 using System;
 using System.Collections.Generic;
@@ -21,29 +21,37 @@ namespace SimpleWebShop.App.Mocks
                     {
                         name = "Tesla Model S",
                         description = "Tesla",
+                        shortDescription = "Tesla",
                         price = 45000,
-                        Category = _categoryCars.GetAllCategories.First()
+                        Category = _categoryCars.GetAllCategories.First(),
+                        image = "/img/Tesla_S.jpg",
                     },
                     new Car
                     {
                         name = "Tesla Model E",
                         description = "Tesla",
+                        shortDescription = "Tesla",
                         price = 60000,
-                        Category = _categoryCars.GetAllCategories.First()
+                        Category = _categoryCars.GetAllCategories.First(),
+                        image = "/img/Tesla_E.jpg",
                     },
                     new Car
                     {
                         name = "Tesla Model X",
                         description = "Tesla",
+                        shortDescription = "Tesla",
                         price = 65000,
-                        Category = _categoryCars.GetAllCategories.First()
+                        Category = _categoryCars.GetAllCategories.First(),
+                        image = "/img/Tesla_X.jpg",
                     },
                     new Car
                     {
                         name = "Tesla Model Y",
                         description = "Tesla",
+                        shortDescription = "Tesla",
                         price = 75000,
-                        Category = _categoryCars.GetAllCategories.First()
+                        Category = _categoryCars.GetAllCategories.First(),
+                        image = "/img/Tesla_Y.jpg",
                     }
                 };
             }
