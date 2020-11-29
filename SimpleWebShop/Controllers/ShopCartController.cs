@@ -40,7 +40,7 @@ namespace SimpleWebShop.Controllers
                 _shopCart.AddItemToCart(item);
             }
 
-            return RedirectToAction("CarsView");
+            return RedirectToAction("CartView");
         }
     }
 }

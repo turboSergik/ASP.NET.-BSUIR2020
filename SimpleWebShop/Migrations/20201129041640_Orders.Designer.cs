@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleWebShop.App;
 
 namespace SimpleWebShop.Migrations
 {
     [DbContext(typeof(AppDBContent))]
-    partial class AppDBContentModelSnapshot : ModelSnapshot
+    [Migration("20201129041640_Orders")]
+    partial class Orders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,24 +88,16 @@ namespace SimpleWebShop.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("email")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("lastName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("phone")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
@@ -117,10 +111,10 @@ namespace SimpleWebShop.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("CarID")
+                    b.Property<int?>("carid")
                         .HasColumnType("int");
 
-                    b.Property<int>("orderID")
+                    b.Property<int>("orderId")
                         .HasColumnType("int");
 
                     b.Property<int>("price")
@@ -128,9 +122,9 @@ namespace SimpleWebShop.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("CarID");
+                    b.HasIndex("carid");
 
-                    b.HasIndex("orderID");
+                    b.HasIndex("orderId");
 
                     b.ToTable("OrderDetail");
                 });
@@ -173,13 +167,11 @@ namespace SimpleWebShop.Migrations
                 {
                     b.HasOne("SimpleWebShop.App.Models.Car", "car")
                         .WithMany()
-                        .HasForeignKey("CarID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("carid");
 
                     b.HasOne("SimpleWebShop.App.Models.Order", "order")
                         .WithMany("orderDetails")
-                        .HasForeignKey("orderID")
+                        .HasForeignKey("orderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

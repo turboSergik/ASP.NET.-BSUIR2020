@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace SimpleWebShop.App.Models
         {
             this._appDBContent.ShopCartItem.Add(new ShopCartItem 
             { 
-                shopCartId = this.shopCartId,
+                shopCartId = shopCartId,
                 car = car,
                 price = car.price
             });
@@ -44,7 +45,7 @@ namespace SimpleWebShop.App.Models
 
         public List<ShopCartItem> GetShopItems()
         {
-            return _appDBContent.ShopCartItem.Where(item => item.shopCartId == this.shopCartId).ToList();
+            return _appDBContent.ShopCartItem.Where(item => item.shopCartId == this.shopCartId).Include(item => item.car).ToList();
         }
     }
 }
