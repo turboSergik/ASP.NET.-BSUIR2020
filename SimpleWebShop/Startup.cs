@@ -9,6 +9,8 @@ using SimpleWebShop.App.Mocks;
 
 using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Repository;
+using Microsoft.AspNetCore.Http;
+using SimpleWebShop.App.Models;
 
 namespace SimpleWebShop
 {
@@ -27,12 +29,17 @@ namespace SimpleWebShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDBContent>(options => options.UseSqlServer(_confString.GetConnectionString("DefaultConnection")));
-
             services.AddTransient<IAllCars, CarsRepository>();
             services.AddTransient<ICarsCategory, CategoryRepository>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(item => ShopCart.GetCart(item));
+
             services.AddMvc(mvcOtions => {
                 mvcOtions.EnableEndpointRouting = false;
             });
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +53,7 @@ namespace SimpleWebShop
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseMvcWithDefaultRoute();
 
             GenerateDBObjects.GenerateObjects(app);

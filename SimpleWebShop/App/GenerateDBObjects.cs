@@ -69,6 +69,7 @@ namespace SimpleWebShop.App
                     price = 45000,
                     Category = Categories["Электромобили"],
                     image = "/img/Tesla_S.jpg",
+                    isFavorite = true,
                 },
                 new Car
                 {
@@ -78,6 +79,7 @@ namespace SimpleWebShop.App
                     price = 60000,
                     Category = Categories["Электромобили"],
                     image = "/img/Tesla_E.jpg",
+                    isFavorite = true,
                 },
                 new Car
                 {
@@ -87,6 +89,7 @@ namespace SimpleWebShop.App
                     price = 65000,
                     Category = Categories["Электромобили"],
                     image = "/img/Tesla_X.jpg",
+                    isFavorite = true,
                 },
                 new Car
                 {
@@ -96,6 +99,7 @@ namespace SimpleWebShop.App
                     price = 75000,
                     Category = Categories["Электромобили"],
                     image = "/img/Tesla_Y.jpg",
+                    isFavorite = false,
                 }
             );
         }

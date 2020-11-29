@@ -1,0 +1,11 @@
+﻿@model Car
+
+<div class="col-lg-4">
+    <div class="lot">
+        <img class="lot__image" src="@Model.image" alt="@Model.name" />
+    </div>
+    <h2>@Model.name</h2>
+    <p>@Model.shortDescription</p>
+    <p>Цена: @Model.price.ToString("c")</p>
+    <p><a class="btn btn-warning" href="#">Подробнее</a></p>
+</div>
