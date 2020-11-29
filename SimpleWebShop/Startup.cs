@@ -54,7 +54,12 @@ namespace SimpleWebShop
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseSession();
-            app.UseMvcWithDefaultRoute();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(name: "deffault", template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(name: "categoryFilter", template: "Car/{action}/{category?}", defaults: new { Controller = "Cars", action = "CarsView" });
+            });
 
             GenerateDBObjects.GenerateObjects(app);
         }

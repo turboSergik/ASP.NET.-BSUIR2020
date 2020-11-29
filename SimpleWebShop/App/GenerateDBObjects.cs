@@ -42,7 +42,7 @@ namespace SimpleWebShop.App
                         },
                         new Category
                         {
-                            name = "Автомобили на ДВС",
+                            name = "ДВС",
                             description = "Устаревшие технологии"
                         }
                     };
