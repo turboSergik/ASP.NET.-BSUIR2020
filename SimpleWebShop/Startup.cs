@@ -11,6 +11,7 @@ using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Repository;
 using Microsoft.AspNetCore.Http;
 using SimpleWebShop.App.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SimpleWebShop
 {
@@ -32,6 +33,7 @@ namespace SimpleWebShop
             services.AddTransient<IAllCars, CarsRepository>();
             services.AddTransient<ICarsCategory, CategoryRepository>();
             services.AddTransient<IAllOrders, OrdersRepository>();
+            services.AddTransient<IUsers, UsersRepository>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(item => ShopCart.GetCart(item));
@@ -41,6 +43,9 @@ namespace SimpleWebShop
             });
             services.AddMemoryCache();
             services.AddSession();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o => o.LoginPath = new PathString("/Acccount/Login"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +55,9 @@ namespace SimpleWebShop
             if (env.IsDevelopment())
             {
             }
-            
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
