@@ -34,7 +34,7 @@ namespace SimpleWebShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
+        public async Task<ActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace SimpleWebShop.Controllers
                     // success creating user
                     if (user != null)
                     {
-                        HttpContext.SignOutAsync();
+                        await HttpContext.SignOutAsync();
                         var listClaims = new List<Claim>()
                         {
                             new Claim(ClaimTypes.Email, model.email),
@@ -61,8 +61,8 @@ namespace SimpleWebShop.Controllers
 
                         var userPrincipal = new ClaimsPrincipal(new[] { claimIndentity });
 
-                        HttpContext.SignInAsync(userPrincipal);
-
+                        await HttpContext.SignInAsync(userPrincipal);
+                        await SendingEmails.SendEmailAsync(user.email);
 
                         ViewBag.message = "Успешная регистрация.";
                         return Redirect("/Home/Index");
@@ -106,9 +106,8 @@ namespace SimpleWebShop.Controllers
 
                     var claimIndentity = new ClaimsIdentity(listClaims, "Claims");
                     var userPrincipal = new ClaimsPrincipal(new[] { claimIndentity });
-                    await HttpContext.SignInAsync(userPrincipal);
 
-                    await SendingEmails.SendEmailAsync(user.email);
+                    await HttpContext.SignInAsync(userPrincipal);
 
                     ViewBag.message = "Успешная авторизация.";
                     return Redirect("/Home/Index");

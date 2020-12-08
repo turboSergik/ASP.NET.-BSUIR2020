@@ -24,8 +24,6 @@ namespace SimpleWebShop.Controllers
         [Route("Cars/CarsView/{category}")]
         public ViewResult CarsView(string category)
         {
-            var kek = User.Identity.IsAuthenticated;
-            var name = User.Identity.Name;
 
             string _category = category;
             string curCategory = "";
