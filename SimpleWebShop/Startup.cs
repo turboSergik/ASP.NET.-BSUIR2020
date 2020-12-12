@@ -17,6 +17,7 @@ namespace SimpleWebShop
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
 
         private IConfigurationRoot _confString;
 

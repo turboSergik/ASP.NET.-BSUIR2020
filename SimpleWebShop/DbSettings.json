@@ -1,5 +1,5 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=Shop;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=webshopbsuir2020.database.windows.net;Database=WebShop;User Id=sergey;Password=<passw>;"
   }
 }
