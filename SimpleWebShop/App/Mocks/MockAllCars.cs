@@ -1,6 +1,9 @@
-﻿using SimpleWebShop.App.Interfaces;
+﻿using Microsoft.AspNetCore.SignalR;
+using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Models;
+using SimpleWebShop.App.SignalR;
+using SimpleWebShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +74,11 @@ namespace SimpleWebShop.App.Mocks
             {
 
             }
+        }
+
+        public Car CreateCar(CreateCarViewModel model)
+        {
+            throw new NotImplementedException();
         }
 
         public Car GetObjectCar(int carID)

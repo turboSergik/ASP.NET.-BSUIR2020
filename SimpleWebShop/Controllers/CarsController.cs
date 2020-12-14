@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Models;
 using SimpleWebShop.ViewModels;
@@ -13,11 +14,14 @@ namespace SimpleWebShop.Controllers
     {
         private readonly IAllCars _allCars;
         private readonly ICarsCategory _allCategories;
+        private readonly ILogger<AccountController> _logger;
 
-        public CarsController(IAllCars allCars, ICarsCategory allCategories)
+
+        public CarsController(IAllCars allCars, ICarsCategory allCategories, ILogger<AccountController> logger)
         {
             _allCars = allCars;
             _allCategories = allCategories;
+            _logger = logger;
         }
 
         [Route("Cars/CarsView")]
@@ -36,21 +40,15 @@ namespace SimpleWebShop.Controllers
             }
             else
             {
-                if (string.Equals("electro", category, StringComparison.OrdinalIgnoreCase))
-                {
-                    cars = _allCars.GetAllCars.Where(item => item.Category.name.Equals("Электромобили"));
-                    curCategory = "Электромобили";
-                }
-                else if (string.Equals("fuel", category, StringComparison.OrdinalIgnoreCase))
-                {
-                    cars = _allCars.GetAllCars.Where(item => item.Category.name.Equals("ДВС"));
-                    curCategory = "Классические автомобили";
-                }
+                cars = _allCars.GetAllCars.Where(item => item.Category.name.ToLower() == _category.ToLower());
+                curCategory = _category;
             }
+
+            _logger.LogInformation("LOG Show cars for special category");
 
             CarsListViewModel obj = new CarsListViewModel();
             obj.allCars = cars.ToList();
-            obj.currentCategory = curCategory;
+            obj.currentCategory = _category;
 
             return View(obj);
         }

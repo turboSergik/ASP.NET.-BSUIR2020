@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SimpleWebShop.App.Interfaces;
 using SimpleWebShop.App.Models;
 using System;
@@ -12,11 +13,13 @@ namespace SimpleWebShop.Controllers
     {
         private readonly IAllOrders _orders;
         private readonly ShopCart _shopCart;
+        private readonly ILogger<AccountController> _logger;
 
-        public OrderController(IAllOrders allOrders, ShopCart shopCart)
+        public OrderController(IAllOrders allOrders, ShopCart shopCart, ILogger<AccountController> logger)
         {
             _orders = allOrders;
             _shopCart = shopCart;
+            _logger = logger;
         }
 
         public IActionResult Checkout()
@@ -32,11 +35,13 @@ namespace SimpleWebShop.Controllers
             if (_shopCart.listShopItems.Count == 0)
             {
                 ModelState.AddModelError("", "Корзина не должна быть пуста!");
+                _logger.LogInformation("LOG cart is empty!");
             }
 
             if (ModelState.IsValid)
             {
                 _orders.createOrder(order);
+                _logger.LogInformation("LOG cart success added!");
                 return RedirectToAction("Complete");
             }
 

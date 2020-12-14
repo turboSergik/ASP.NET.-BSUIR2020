@@ -9,6 +9,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 
 namespace SimpleWebShop.Controllers
 {
@@ -16,10 +17,12 @@ namespace SimpleWebShop.Controllers
     {
 
         private readonly IUsers _users;
+        private readonly ILogger _logger;
 
-        public AccountController(IUsers users)
+        public AccountController(IUsers users, ILogger<AccountController> logger)
         {
             _users = users;
+            _logger = logger;
         }
 
         public ActionResult Register()
@@ -51,10 +54,15 @@ namespace SimpleWebShop.Controllers
                     if (user != null)
                     {
                         await HttpContext.SignOutAsync();
+
+                        string userRoleString;
+                        if (user.role == 0) userRoleString = "User";
+                        else userRoleString = "Admin";
+
                         var listClaims = new List<Claim>()
                         {
                             new Claim(ClaimTypes.Email, model.email),
-                            new Claim(ClaimTypes.Role, "User")
+                            new Claim(ClaimTypes.Role, userRoleString)
                         };
 
                         var claimIndentity = new ClaimsIdentity(listClaims, "Claims");
@@ -64,13 +72,15 @@ namespace SimpleWebShop.Controllers
                         await HttpContext.SignInAsync(userPrincipal);
                         await SendingEmails.SendEmailAsync(user.email);
 
+                        _logger.LogInformation($"LOG Succecc registration for {user.name}");
+
                         ViewBag.message = "Успешная регистрация.";
                         return Redirect("/Home/Index");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Пользователь с таким email-ом уже существует!");
+                    ModelState.AddModelError("error", "Пользователь с таким email-ом уже существует!");
                 }
             }
             return View(model);
@@ -96,25 +106,30 @@ namespace SimpleWebShop.Controllers
                 if (user != null)
                 {
                     await HttpContext.SignOutAsync();
+
+                    string userRoleString;
+                    if (user.role == 0) userRoleString = "User";
+                    else userRoleString = "Admin";
                     
                     var listClaims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, user.name),
                         new Claim(ClaimTypes.Email, user.email),
-                        new Claim(ClaimTypes.Role, "User"),
+                        new Claim(ClaimTypes.Role, userRoleString),
                     };
 
                     var claimIndentity = new ClaimsIdentity(listClaims, "Claims");
                     var userPrincipal = new ClaimsPrincipal(new[] { claimIndentity });
 
                     await HttpContext.SignInAsync(userPrincipal);
+                    _logger.LogInformation($"LOG Succecc auth for {user.name}");
 
                     ViewBag.message = "Успешная авторизация.";
                     return Redirect("/Home/Index");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль!");
+                    ModelState.AddModelError("error", "Неверный логин или пароль!");
                 }
             }
             return View(model);

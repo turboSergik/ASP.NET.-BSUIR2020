@@ -1,12 +1,21 @@
 ﻿
-<h1>Все тачки</h1>
-<h3>@Model.currentCategory</h3>
-
 <div class="row mt-5 mb-2">
-    @{ 
+    @{
         foreach (Car car in Model.allCars)
         {
             @Html.Partial("AllCars", car)
         }
     }
+
 </div>
+
+
+<div class="row mb-2 mt-3">
+    @{
+        if (User.IsInRole("Admin"))
+        {
+            <p><a class="btn btn-success" asp-controller="CarDetail" asp-action="AddNewCar" asp-route-category="@Model.currentCategory">Create new car</a></p>
+        }
+    }
+</div>
+

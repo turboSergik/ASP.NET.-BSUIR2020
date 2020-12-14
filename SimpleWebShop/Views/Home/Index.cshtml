@@ -1,9 +1,7 @@
 ﻿@model HomeViewModel
 <h3 class="mt-6">@ViewBag.Message</h3>
 
-<h1>Выбраннные тачки</h1>
-
-<div class="row mt-5 mb-2">
+<div id="homePageDiv" class="row mt-5 mb-2">
     @{
         foreach (Car car in Model.favCars)
         {

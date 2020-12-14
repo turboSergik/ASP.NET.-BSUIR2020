@@ -21,7 +21,7 @@ namespace SimpleWebShop.Controllers
         {
    
             var obj = new HomeViewModel();
-            obj.favCars = _carRep.GetFavCars;
+            obj.favCars = _carRep.GetAllCars;
 
             return View(obj);
         }

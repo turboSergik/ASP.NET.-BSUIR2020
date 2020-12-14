@@ -1,0 +1,13 @@
+﻿@model CarDetailViewModel
+
+<div class="col-lg-4">
+    <br />
+    <h3 style="font: bold">@Model.car.name</h3>
+    <div class="lot">
+        <img class="lot__image" src="@Model.car.image" alt="@Model.car.name" />
+    </div>
+    <p>@Model.car.shortDescription</p>
+    <p style="font: bold">Цена: @Model.car.price.ToString("c")</p>
+    <p><a class="btn btn-warning" asp-controller="ShopCart" asp-action="addToCart" asp-route-id="@Model.car.id">Add item to the cart</a></p>
+
+</div>

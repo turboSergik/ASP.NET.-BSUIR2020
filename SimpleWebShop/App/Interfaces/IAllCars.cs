@@ -1,4 +1,7 @@
-﻿using SimpleWebShop.App.Models;
+﻿using Microsoft.AspNetCore.SignalR;
+using SimpleWebShop.App.Models;
+using SimpleWebShop.App.SignalR;
+using SimpleWebShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +14,6 @@ namespace SimpleWebShop.App.Interfaces
         IEnumerable<Car> GetAllCars { get; }
         IEnumerable<Car> GetFavCars { get; }
         Car GetObjectCar(int carID);
+        Car CreateCar(CreateCarViewModel model);
     }
 }

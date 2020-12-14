@@ -12,6 +12,8 @@ using SimpleWebShop.App.Repository;
 using Microsoft.AspNetCore.Http;
 using SimpleWebShop.App.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SimpleWebShop.App.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace SimpleWebShop
 {
@@ -30,6 +32,8 @@ namespace SimpleWebShop
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddDbContext<AppDBContent>(options => options.UseSqlServer(_confString.GetConnectionString("DefaultConnection")));
             services.AddTransient<IAllCars, CarsRepository>();
             services.AddTransient<ICarsCategory, CategoryRepository>();
@@ -52,22 +56,26 @@ namespace SimpleWebShop
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
             if (env.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
             }
-            app.UseAuthentication();
-            app.UseAuthorization();
 
-            app.UseDeveloperExceptionPage();
+            app.UseAuthentication();
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseSession();
+            app.UseRouting();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "deffault", template: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute(name: "categoryFilter", template: "Car/{action}/{category?}", defaults: new { Controller = "Cars", action = "CarsView" });
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<EventHub>("/EventHub");
             });
 
             GenerateDBObjects.GenerateObjects(app);
